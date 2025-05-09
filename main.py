@@ -4,6 +4,7 @@ from langchain_utils import get_rag_chain
 from db_utils import insert_application_logs, get_chat_history, get_all_documents, insert_document_record, delete_document_record
 from chroma_utils import index_document_to_chroma, delete_doc_from_chroma
 import os
+import uvicorn
 import uuid
 import logging
 from fastapi import UploadFile, File, HTTPException
@@ -109,3 +110,9 @@ async def get_history(session_id: str):
     return {
         "messages": chat_history.get(session_id, [])
     }
+
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))  # Fallback to 8000 locally
+    uvicorn.run(app, host="0.0.0.0", port=port)
